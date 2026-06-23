@@ -2,31 +2,37 @@ from ast import List
 
 
 class Solution:
-    def evalRPN(self, target: List[int], n: int) -> List[str]:
-        result = []
-        j = 0
 
-        for i in range(1, n + 1):
-            if j >= len(target):
-                break
+    def evalRPN(self, tokens: List[str]) -> int:
 
-            result.append("Push")
+        stack = []
 
-            if i == target[j]:
-                j += 1
+        for token in tokens:
+            if  token not in ["+","-","*","/"]:
+                stack.append(int(token))
             else:
-                result.append("Pop")
+                val2 = stack.pop()
+                val1 = stack.pop()
 
-        return result
+                if token == "+":
+                    stack.append(val1 + val2)
+                elif token == "-":
+                    stack.append(val1 - val2)
+                elif token == "*":
+                    stack.append(val1 * val2)
+                else:
+                    stack.append(int(val1 / val2))
+
+        return stack[-1]
 
 
 def main():
-    nums = [1, 2, 3]
-    n = 3
+    tokens = ["2","1","+","3","*"]
+    tokens2 = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
 
     sol = Solution()
 
-    print(sol.buildArray(nums, n=n))
+    print(sol.evalRPN(tokens2))
 
 
 if __name__ == '__main__':
